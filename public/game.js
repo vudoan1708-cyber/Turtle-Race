@@ -1327,7 +1327,7 @@ function displayPunch() {
                 punch.splice(j, 5);
                 punchSound.play();
                 if (bossHealthBar > 0) {
-                    bossHealthBar -= 1000;
+                    bossHealthBar -= 5;
                     // console.log(bossHealthBar);
                 }
             }
@@ -1478,7 +1478,7 @@ function displayTurtles() {
                     punchCount++;
                     punchSound.play();
                     punch.splice(j, 5);
-                    turtles[i].x -= 500;
+                    turtles[i].x -= 50;
                 }
             }
             pushPunch = true;
