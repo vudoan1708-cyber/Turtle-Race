@@ -1884,31 +1884,31 @@ function touchStarted() {
                             if (mouseY > 0 && mouseY < d) {
                                 // if a bonus is collected
                                 punch[0].move();
-                                countBonus = 0;
+                                countBonus--;
                             }
                         } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
                             if (mouseY > d && mouseY < d * 2) {
                                 // if a bonus is collected
                                 punch[1].move();
-                                countBonus = 0;
+                                countBonus--;
                             }
                         } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
                             if (mouseY > d * 2 && mouseY < d * 3) {
                                 // if a bonus is collected
                                 punch[2].move();
-                                countBonus = 0;
+                                countBonus--;
                             }
                         } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
                             if (mouseY > d * 3 && mouseY < d * 4) {
                                 // if a bonus is collected
                                 punch[3].move();
-                                countBonus = 0;
+                                countBonus--;
                             }
                         } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
                             if (mouseY > d * 4 && mouseY < height / rows * 5) {
                                 // if a bonus is collected
                                 punch[4].move();
-                                countBonus = 0;
+                                countBonus--;
                             }
                         }
                     }
