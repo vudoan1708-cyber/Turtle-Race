@@ -60,7 +60,7 @@ class Turtles {
 
 
     touch(destination) {
-        if (this.x > destination.x + destination.w) {
+        if (this.x + this.size > destination.x + destination.w) {
             return true;
         } else return false;
     }
@@ -149,7 +149,7 @@ class MyTurtle {
     }
 
     touch(destination) {
-        if (this.x > destination.x + destination.w) {
+        if (this.x + this.size > destination.x + destination.w) {
             return true;
         } else return false;
     }

@@ -179,7 +179,7 @@ function MediaLoader() {
 // get the highest score from the database
 async function getHighestScore() {
 	const response = await fetch('/score/');
-	highestScore = await response.json();
+    highestScore = await response.json();
 	return highestScore;
 }
 
@@ -747,9 +747,6 @@ function gamePlay() {
                     flags[f].move();
                 }
                 displayDestination();
-                drawHeart();
-                displayHeart();
-
 
                 drawBonuses();
                 displayBonuses();
@@ -780,6 +777,8 @@ function gamePlay() {
                 textFont("Georgia");
                 textSize(100);
                 text("YOU LOST", width / 2, height / 2 + 25);
+                textSize(45);
+                text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
                 textSize(25);
                 text("Press F5 to restart", width / 2, height / 2 + 100);
                 pop();
@@ -825,9 +824,6 @@ function gamePlay() {
             }
             displayBoucingBox();
             displayDestination();
-            drawHeart();
-            displayHeart();
-
 
             drawBonuses();
             displayBonuses();
@@ -863,6 +859,8 @@ function gamePlay() {
                 textFont("Georgia");
                 textSize(100);
                 text("YOU LOST", width / 2, height / 2 + 25);
+                textSize(45);
+                text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
                 textSize(25);
                 text("Press F5 to restart", width / 2, height / 2 + 100);
                 pop();
@@ -899,9 +897,6 @@ function gamePlay() {
         }
         displayBoucingBox();
         displayDestination();
-        drawHeart();
-        displayHeart();
-
 
         drawBonuses();
         displayBonuses();
@@ -1147,6 +1142,8 @@ function endGame() {
             textFont("Georgia");
             textSize(100);
             text("YOU LOST", width / 2, height / 2 + 25);
+            textSize(45);
+            text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
             textSize(25);
             text("Press F5 to restart", width / 2, height / 2 + 100);
             pop();
@@ -1429,7 +1426,16 @@ function displayThumbnail() {
     pop();
 }
 
+// function drawSpikes() {
+//     for (let s = 0; s < rows; s++) {
+
+//     }
+// }
+
 function drawBonuses() {
+
+    drawHeart();
+    displayHeart();
 
     for (let b = 0; b < rows; b++) {
         // if (frameCount % 20 == 0) {
@@ -1451,11 +1457,13 @@ function displayBonuses() {
         Glovebonuses[b].move();
         Glovebonuses[b].update();
         if (Glovebonuses[b].collected(myTurtle)) { // if collected
+
+            // push 5 more bonus items to the array
             for (let j = 0; j < rows; j++) {
                 punch.push(new PunchBackwards(j));
                 // console.log(punch);
             }
-            if (countBonus < 1) {
+            if (countBonus < 5) {
                 countBonus++;
             }
             Glovebonuses.splice(b, 1); // gets spliced  
@@ -1506,6 +1514,8 @@ function displayTurtles() {
                     textFont("Georgia");
                     textSize(100);
                     text("YOU LOST", width / 2, height / 2 + 25);
+                    textSize(45);
+                    text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
                     textSize(25);
                     text("Press F5 to restart", width / 2, height / 2 + 100);
                     pop();
@@ -1571,6 +1581,8 @@ function displayTurtles() {
                 textFont("Georgia");
                 textSize(100);
                 text("YOU LOST", width / 2, height / 2 + 25);
+                textSize(45);
+                text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
                 textSize(25);
                 text("Press F5 to restart", width / 2, height / 2 + 100);
                 pop();
@@ -1734,34 +1746,33 @@ function keyPressed() {
 
         if (punch.length >= 5) {
             if (keyIsAvailable) {
-                // hit key from 1 - 5 to show skills
-                if (key == "1") {
-                    // if a bonus is collected
-                    punch[0].move();
-                    countBonus = 0;
-                    keyIsAvailable = false;
-                } else if (key == "2") {
-                    // if a bonus is collected
-                    punch[1].move();
-                    countBonus = 0;
-                    keyIsAvailable = false;
-                } else if (key == "3") {
-                    // if a bonus is collected
-                    punch[2].move();
-                    countBonus = 0;
-                    keyIsAvailable = false;
-                } else if (key == "4") {
-                    // if a bonus is collected
-                    punch[3].move();
-                    countBonus = 0;
-                    keyIsAvailable = false;
-                } else if (key == "5") {
-                    // if a bonus is collected
-                    punch[4].move();
-                    countBonus = 0;
-                    keyIsAvailable = false;
+                if (countBonus > 0) {
+                    // hit key from 1 - 5 to show skills
+                    if (key == "1") {
+                        // if a bonus is collected
+                        punch[0].move();
+                        countBonus--;
+                    } else if (key == "2") {
+                        // if a bonus is collected
+                        punch[1].move();
+                        countBonus--;
+                    } else if (key == "3") {
+                        // if a bonus is collected
+                        punch[2].move();
+                        countBonus--;
+                    } else if (key == "4") {
+                        // if a bonus is collected
+                        punch[3].move();
+                        countBonus--;
+                    } else if (key == "5") {
+                        // if a bonus is collected
+                        punch[4].move();
+                        countBonus--;
+                    }
                 }
             }
+        } else {
+            keyIsAvailable = false;
         }
     }
 }
@@ -1868,40 +1879,42 @@ function touchStarted() {
             // touch the other half to use skills
             if (punch.length >= 5) {
                 if (keyIsAvailable) {
-                    if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
-                        if (mouseY > 0 && mouseY < d) {
-                            // if a bonus is collected
-                            punch[0].move();
-                            countBonus = 0;
-                            keyIsAvailable = false;
-                        }
-                    } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
-                        if (mouseY > d && mouseY < d * 2) {
-                            // if a bonus is collected
-                            punch[1].move();
-                            countBonus = 0;
-                            keyIsAvailable = false;
-                        }
-                    } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
-                        if (mouseY > d * 2 && mouseY < d * 3) {
-                            // if a bonus is collected
-                            punch[2].move();
-                            countBonus = 0;
-                            keyIsAvailable = false;
-                        }
-                    } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
-                        if (mouseY > d * 3 && mouseY < d * 4) {
-                            // if a bonus is collected
-                            punch[3].move();
-                            countBonus = 0;
-                            keyIsAvailable = false;
-                        }
-                    } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
-                        if (mouseY > d * 4 && mouseY < height / rows * 5) {
-                            // if a bonus is collected
-                            punch[4].move();
-                            countBonus = 0;
-                            keyIsAvailable = false;
+                    if (countBonus > 0) {
+                        if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
+                            if (mouseY > 0 && mouseY < d) {
+                                // if a bonus is collected
+                                punch[0].move();
+                                countBonus = 0;
+                                keyIsAvailable = false;
+                            }
+                        } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
+                            if (mouseY > d && mouseY < d * 2) {
+                                // if a bonus is collected
+                                punch[1].move();
+                                countBonus = 0;
+                                keyIsAvailable = false;
+                            }
+                        } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
+                            if (mouseY > d * 2 && mouseY < d * 3) {
+                                // if a bonus is collected
+                                punch[2].move();
+                                countBonus = 0;
+                                keyIsAvailable = false;
+                            }
+                        } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
+                            if (mouseY > d * 3 && mouseY < d * 4) {
+                                // if a bonus is collected
+                                punch[3].move();
+                                countBonus = 0;
+                                keyIsAvailable = false;
+                            }
+                        } if (mouseX > width / 2 + 50 && mouseX < width) { // touch on the other half of the screen to set skills
+                            if (mouseY > d * 4 && mouseY < height / rows * 5) {
+                                // if a bonus is collected
+                                punch[4].move();
+                                countBonus = 0;
+                                keyIsAvailable = false;
+                            }
                         }
                     }
                 }
