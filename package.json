@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/vudoan1708-cyber/Turtle-Race#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nedb": "^1.8.0"
   }
 }
