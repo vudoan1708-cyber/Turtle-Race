@@ -243,10 +243,10 @@ class Button {
             textFont("Georgia");
             if (mobileResize) {
                 textSize(40);
-                text("My Inspiration", width / 5 + 10, height - height / 2 + 200);
+                text("My Inspiration", width / 5 + 30, height - height / 2 + 230);
             } else {
                 textSize(80);
-                text("My Inspiration", width / 5 + 10, height - height / 2 + 150);
+                text("My Inspiration", width / 5 + 30, height - height / 2 + 180);
             }
             pop();
         }
@@ -274,10 +274,10 @@ class Button {
             textFont("Georgia");
             if (mobileResize) {
                 textSize(40);
-                text("Reference", width - width / 5, height - height / 2 + 200);
+                text("Reference", width - width / 5, height - height / 2 + 230);
             } else {
                 textSize(80);
-                text("Reference", width - width / 5, height - height / 2 + 150);
+                text("Reference", width - width / 5, height - height / 2 + 180);
             }
             pop();
         }

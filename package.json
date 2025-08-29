@@ -4,8 +4,8 @@
   "description": "a game about animal racing and rasising awareness of animal welfare",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/vudoan1708-cyber/Turtle-Race#readme",
   "dependencies": {
+    "dotenv": "^17.2.1",
     "express": "^4.17.1",
-    "nedb": "^1.8.0"
+    "monk": "^7.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

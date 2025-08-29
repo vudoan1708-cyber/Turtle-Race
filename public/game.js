@@ -122,8 +122,10 @@ let instructionText = ["You will WIN when:", // 0
     ".Other Turtles come FIRST in the race", // 4
     ".Or Your Turtle gets ELIMINATED by being pushed towards to the gears", // 5
     ".You let Your Turtle OFF the race path", // 6
-    "Use UP ARROW and DOWN ARROW / touch on the UPPER HALF and LOWER HALF of the LEFT HAND SIDE OF THE SCREEN to move the turtle", // 7
-    "And You can press NUMBER 1-5 / touch on A PATH of the RIGHT HAND SIDE OF THE SCREEN everytime Your Turtle collects A PUNCH SKILL to use it", // 8
+    "Use UP ARROW and DOWN ARROW / touch on the UPPER HALF", // 7
+    "and LOWER HALF of the LEFT HAND SIDE OF THE SCREEN to move the turtle.",
+    "You can also press NUMBER 1-5 / touch on A PATH of the RIGHT HAND SIDE OF THE SCREEN", // 8
+    "everytime Your Turtle collects A PUNCH SKILL to use it",
     "The Energy Boost is A MUST to keep up the speed"   
 ]; // 9
 
@@ -131,12 +133,11 @@ let aboutMeText = ["My name is Vu Doan, a Digital Media student at UWE Bristol, 
     "My date of birth is 17th of August, 1998, and I am Leo :))", // 1
     "I like to play guitar, love music in general, have a passion with 3D and a mere joy for coding", // 2
     "vudoan1708@gmail.com", // 3
-    "https://vudoan387.blogspot.com/", // 4
-    "https://vudoananim387.blogspot.com/"
+    "https://vudoan.vercel.app/", // 4
 ]; // 5
 
 let inspirationText = ["The game was originally inspired by so many racing game I've played in a 3D platform", // 0
-    "But instead of transports or vehicles, I wanted to use an animal to imply animal awareness", // 1
+    "But instead of transports or vehicles, I wanted to use an animal to imply animal abuse awareness", // 1
     "And also to say to myself", // 2
     "'It's Okay To Be Slow, Just Don't Give Up'"
 ]; // 3
@@ -151,21 +152,7 @@ let referenceText = ["Images:", // 0
     "Songs and Sound Effects:", // 7
     "Intro Song:", // 8
     "http://freemusicarchive.org/music/Checkie_Brown_1005/hey/Mary_Roose_CB_36", // 9
-    "Punch Sound:", // 10
-    "https://www.zapsplat.com/music/cartoon-punch-2/", // 11
-    "Energy Pick-Up:", // 12
-    "https://www.zapsplat.com/music/game-tone-gold-bar-collect-pick-up-2/", // 13
-    "Heart Pick-Up:", // 14
-    "https://www.zapsplat.com/music/game-tone-gem-or-treasure-collect-find-20/", // 15
-    "Punch Skill Pick-Up:", // 16
-    "https://www.zapsplat.com/music/game-tone-gem-or-treasure-collect-find-9/", // 17
-    "Car Engine Start:", // 18
-    "https://www.partnersinrhyme.com/soundfx/car_sounds/StartCar.shtml", // 19
-    "Race Start:", // 20
-    "http://soundbible.com/1768-Starting-Pistol.html", // 21
-    "Car Crash:", // 22
-    "https://www.zapsplat.com/music/car-crash-skid-them-smash-heavy-metal-and-glass-shatter/"
-]; // 23
+]; // 10
 
 function MediaLoader() {
     loadingCounter++;
@@ -180,7 +167,28 @@ function MediaLoader() {
 async function getHighestScore() {
 	const response = await fetch('/score/');
     highestScore = await response.json();
+    if (highestScore?.length === 0) {
+        highestScore = [{ duration: 1000 }];
+    }
 	return highestScore;
+}
+
+async function updateScoreBoard() {
+    const data = {
+        duration
+    };
+
+    // create options
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+    const response = await fetch('/score/', options);
+    await response.json();
 }
 
 async function setup() {
@@ -521,7 +529,7 @@ function gameMenu() {
         } else textSize(20);
         
         text(referenceText[0], width / 4, height / 5); // images
-        text(referenceText[7], width - width / 4, height / 5.75); // songs and sounds
+        text(referenceText[7], width / 4, height / 1.8); // songs and sounds
         // image section
         textAlign(LEFT);
         text(referenceText[1], d - 25, height / 4); // glove
@@ -536,30 +544,16 @@ function gameMenu() {
         text(referenceText[6], d - 25, height / 2.1);
 
         // songs and sounds section
-        textAlign(RIGHT);
+        textAlign(LEFT);
         if (!mobileResize) {
             textSize(25);
         } else textSize(20);
-        text(referenceText[8], width - d - 10, height / 4.6); // intro
-        text(referenceText[10], width - d - 10, height / 3.4); // punch
-        text(referenceText[12], width - d - 10, height / 2.6); // energy pick up
-        text(referenceText[14], width - d - 10, height / 2.1); // heart pick up
-        text(referenceText[16], width - d - 10, height / 1.75); // punch bonuse pick up
-        text(referenceText[18], width - d - 10, height / 1.52); // car engine
-        text(referenceText[20], width - d - 10, height / 1.35); // race start
-        text(referenceText[22], width - d - 10, height / 1.2); // car crash
+        text(referenceText[8], d - 25, height / 1.52); // intro
 
         if (!mobileResize) {
             textSize(15);
         } else textSize(10);
-        text(referenceText[9], width - d, height / 4.15);
-        text(referenceText[11], width - d, height / 3.1);
-        text(referenceText[13], width - d, height / 2.4);
-        text(referenceText[15], width - d, height / 1.95);
-        text(referenceText[17], width - d, height / 1.65);
-        text(referenceText[19], width - d, height / 1.45);
-        text(referenceText[21], width - d, height / 1.3);
-        text(referenceText[23], width - d, height / 1.15);
+        text(referenceText[9], d - 25, height / 1.45);
         pop();
         if (!anim) { // scale animation for close
             push();
@@ -778,7 +772,7 @@ function gamePlay() {
                 textSize(100);
                 text("YOU LOST", width / 2, height / 2 + 25);
                 textSize(45);
-                text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
+                text("Best: " + highestScore?.[0]?.duration + ' seconds', width / 2, height / 2 - 100);
                 textSize(25);
                 text("Press F5 to restart", width / 2, height / 2 + 100);
                 pop();
@@ -860,7 +854,7 @@ function gamePlay() {
                 textSize(100);
                 text("YOU LOST", width / 2, height / 2 + 25);
                 textSize(45);
-                text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
+                text("Best: " + highestScore?.[0]?.duration + ' seconds', width / 2, height / 2 - 100);
                 textSize(25);
                 text("Press F5 to restart", width / 2, height / 2 + 100);
                 pop();
@@ -982,7 +976,6 @@ function raceCount() {
 }
 
 function playDuration() {
-
     if (durationCount) {
 
         // start counting duration players take to win first level (in seconds)
@@ -1143,7 +1136,7 @@ function endGame() {
             textSize(100);
             text("YOU LOST", width / 2, height / 2 + 25);
             textSize(45);
-            text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
+            text("Best: " + highestScore?.[0]?.duration + ' seconds', width / 2, height / 2 - 100);
             textSize(25);
             text("Press F5 to restart", width / 2, height / 2 + 100);
             pop();
@@ -1351,7 +1344,6 @@ function displayPunch() {
 }
 
 async function resetGameDisplay() {
-
     // stop the game loop
     noLoop();
 
@@ -1365,36 +1357,18 @@ async function resetGameDisplay() {
         textSize(100);
         text("YOU WON", width / 2, height / 2 + 25);
         textSize(45);
-        text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
+        text("Best: " + highestScore?.[0]?.duration + ' seconds', width / 2, height / 2 - 100);
 
         // check if there is data from the database
-        if (highestScore != undefined || highestScore != null) {
-                
-            // and if the highest score is less than current score
-            if (highestScore[0].duration > duration) {
+        if (highestScore !== undefined || highestScore !== null) {
+            // and if the current duration is less than the highest score duration (new duration record)
+            if (duration < highestScore?.[0]?.duration) {
 
                 if (endingCnt < 1) {
 
                     endingCnt++;
 
-                    // post the score to the database
-                    // create a data instance to store data
-                    const data = {
-                        duration
-                    };
-
-                    // create options
-                    const options = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    };
-
-                    // fetch the endpoint
-                    const response = await fetch('/score/', options);
-                    await response.json();
+                    await updateScoreBoard();
                 }
 
                 // change fill colour
@@ -1515,7 +1489,7 @@ function displayTurtles() {
                     textSize(100);
                     text("YOU LOST", width / 2, height / 2 + 25);
                     textSize(45);
-                    text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
+                    text("Best: " + highestScore?.[0]?.duration + ' seconds', width / 2, height / 2 - 100);
                     textSize(25);
                     text("Press F5 to restart", width / 2, height / 2 + 100);
                     pop();
@@ -1531,10 +1505,8 @@ function displayTurtles() {
     // lv 2 transition
     if (myTurtle.touch(destination)) {
         if (level == 1) {
-
             if (frameCount % 60 == 0) {
                 counterLv++;
-                
             }
             if (counterLv < 6) {
                 if (!lose) {
@@ -1561,7 +1533,6 @@ function displayTurtles() {
         } else if (level == 2) {
 
             if (!lose) {
-
                 setTimeout(resetGameDisplay, 2200);
             }
 
@@ -1582,7 +1553,7 @@ function displayTurtles() {
                 textSize(100);
                 text("YOU LOST", width / 2, height / 2 + 25);
                 textSize(45);
-                text("Best: " + highestScore[0].duration + ' seconds', width / 2, height / 2 - 100);
+                text("Best: " + highestScore?.[0]?.duration + ' seconds', width / 2, height / 2 - 100);
                 textSize(25);
                 text("Press F5 to restart", width / 2, height / 2 + 100);
                 pop();
