@@ -175,7 +175,8 @@ async function getHighestScore() {
 
 async function updateScoreBoard() {
     const data = {
-        duration
+        duration,
+        healthBar: HealthBar,
     };
 
     // create options
