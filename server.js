@@ -1,11 +1,14 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const http = require('http');
 const createConnection = require('./data/connection');
 
-const app = express();
+const root = path.join(__dirname, './public');
 const port = process.env.PORT || 5000;
+
+const app = express();
 const server = http.createServer(app);
 
 server.listen(port, () => { console.log(`Listening on port: ${port}`) });
@@ -29,4 +32,4 @@ app.get('/score/', async function(_, response) {
         throw (err);
     }
 });
-app.use(express.static('public'));
+app.use(express.static(root));
